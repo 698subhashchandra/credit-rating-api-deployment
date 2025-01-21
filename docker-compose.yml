@@ -18,5 +18,4 @@ services:
     image: '698subhashchandra/credit-rating-api:latest'  # Specify the image to pull from Docker Hub
     ports:
       - "8000:8000"  # Map container port 8000 to host port 8000
-    volumes:
-      - .:/app  # Mount the local directory to the container (optional)
+
