@@ -22,3 +22,4 @@ services:
       - .env  # Load environment variables from the .env file
     volumes:
       - .:/app  # Mount the local directory to the container (optional)
+    restart: always
