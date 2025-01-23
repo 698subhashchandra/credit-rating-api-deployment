@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = '698subhashchandra/credit-ratingapis'
+        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_CREDENTIALS = 'dockerhub-cred'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Clean workspace before cloning
+                cleanWs()
+                
+                // Clone your repository
+                git branch: 'main',
+                    url: 'https://github.com/698subhashchandra/credit-rating-api-deployment.git'
+                
+                echo "Repository cloned successfully"
+            }
+        }
+        stage('Stop and Remove Running Containers') {
+            steps {
+                script {
+                    echo "Stopping and removing all running Docker containers"
+                    sh '''
+                      # Stop and remove all running containers
+                      docker ps -q | xargs -r docker stop
+                      docker ps -aq | xargs -r docker rm
+                    '''
+                }
+            }
+        }
+
+        stage('Remove All Docker Images') {
+            steps {
+                script {
+                    echo "Removing all Docker images"
+                    sh '''
+                      # Remove all Docker images
+                      docker images -q | xargs -r docker rmi -f
+                    '''
+                }
+            }
+        }
+
+        stage('Docker Login and Pull Image') {
+            steps {
+                script {
+                    echo "Logging in to DockerHub and pulling the image"
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "docker login -u $DOCKER_USER -p $DOCKER_PASS ${DOCKER_REGISTRY}"
+                    }
+                    sh "docker pull ${DOCKER_IMAGE}"
+                    echo "Docker image pulled successfully"
+                }
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                script {
+                    echo "Running the Docker container"
+                    sh "docker-compose down -v && docker-compose up -d"
+                }
+            }
+        }
+    }
+}
