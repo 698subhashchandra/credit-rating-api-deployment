@@ -11,11 +11,19 @@
 #    volumes:
 #      - .:/app  # Mount the local directory to the container (optional)
 
+#version: '3.8'
+#
+#services:
+#  credit-rating-api:
+#    image: '698subhashchandra/credit-rating-api:latest'  # Specify the image to pull from Docker Hub
+#    ports:
+#      - "8000:8000"  # Map container port 8000 to host port 8000
+
 version: '3.8'
 
 services:
   credit-rating-api:
-    image: '698subhashchandra/credit-rating-api:latest'  # Specify the image to pull from Docker Hub
+    image: ${DOCKER_IMAGE:-698subhashchandra/credit-rating-api:latest} # Default fallback if DOCKER_IMAGE is not set
     ports:
-      - "8000:8000"  # Map container port 8000 to host port 8000
+      - "8000:8000"
 
