@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = '698subhashchandra/credit-ratingapis'
         DOCKER_REGISTRY = 'docker.io'
-        DOCKER_CREDENTIALS = 'dockerhub-cred'
+        DOCKER_CREDENTIALS = 'docker'
     }
 
     stages {
@@ -20,30 +20,7 @@ pipeline {
                 echo "Repository cloned successfully"
             }
         }
-        stage('Stop and Remove Running Containers') {
-            steps {
-                script {
-                    echo "Stopping and removing all running Docker containers"
-                    sh '''
-                      # Stop and remove all running containers
-                      docker ps -q | xargs -r docker stop
-                      docker ps -aq | xargs -r docker rm
-                    '''
-                }
-            }
-        }
-
-        stage('Remove All Docker Images') {
-            steps {
-                script {
-                    echo "Removing all Docker images"
-                    sh '''
-                      # Remove all Docker images
-                      docker images -q | xargs -r docker rmi -f
-                    '''
-                }
-            }
-        }
+        
 
         stage('Docker Login and Pull Image') {
             steps {
