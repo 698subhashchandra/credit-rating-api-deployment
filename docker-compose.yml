@@ -19,20 +19,20 @@
 #    ports:
 #      - "8000:8000"  # Map container port 8000 to host port 8000
 
-#version: '3.8'
-#
-#services:
-#  credit-rating-api:
-#    image: ${DOCKER_IMAGE:-698subhashchandra/credit-rating-api:v2} # Default fallback if DOCKER_IMAGE is not set
-#    ports:
-#      - "8000:8000"
+version: '3.8'
+
+services:
+  credit-rating-api:
+    image: ${DOCKER_IMAGE:-698subhashchandra/credit-ratingapis:v2} # Default fallback if DOCKER_IMAGE is not set
+    ports:
+      - "8000:8000"
 
 
 #Image Pull form AWS ECR
-version: '3'
-services:
-  app:
-    image: docker pull 698subhashchandra/credit-ratingapis:latest
-    ports:
-      - "8000:8000"  # adjust ports as needed
-    restart: unless-stopped
+# version: '3'
+#services:
+ # app:
+  #  image: docker pull 698subhashchandra/credit-ratingapis:latest
+   # ports:
+    #  - "8000:8000"  # adjust ports as needed
+    #restart: unless-stopped
