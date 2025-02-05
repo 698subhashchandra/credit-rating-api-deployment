@@ -32,7 +32,7 @@
 version: '3'
 services:
   app:
-    image: docker pull 698subhashchandra/credit-ratingapis:v5
+    image: docker pull 698subhashchandra/credit-ratingapis:latest
     ports:
       - "8000:8000"  # adjust ports as needed
     restart: unless-stopped
